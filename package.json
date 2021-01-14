@@ -1,0 +1,62 @@
+{
+  "name": "@gnaudio/jabra-electron-renderer-helper",
+  "version": "1.0.0",
+  "description": "Makes jabra-node-sdk available for Electron's renderer process",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "npm run compile && npm run browserify-render && npm run browserify-preload && npm run copyresources",
+    "compile": "tsc -p tsconfig.json",
+    "browserify-preload": "browserify src/testapp/main/preload.ts -x electron -x process -p tsify --bare --debug -o dist/testapp/main/preload_bundle.js",
+    "browserify-render": "browserify src/testapp/renderer/renderer.ts -x electron -p tsify --debug -o dist/testapp/renderer/bundle.js",
+    "copyresources": "copyfiles -u 1 src/**/*.html dist",
+    "start": "cross-env LIBJABRA_TRACE_LEVEL=trace NODE_ENV=dev electron ./dist/testapp/main/main.js",
+    "prepare": "npm run build",
+    "test": "cross-env LIBJABRA_TRACE_LEVEL=trace NODE_ENV=test jest --runInBand --verbose",
+    "clean": "rimraf dist"
+  },
+  "files": [
+    "dist/common/**/*",
+    "dist/main/**/*",
+    "dist/renderer/**/*",
+    "dist/index.*",
+    "README.md",
+    "LICENSE.md",
+    "package.json"
+  ],
+  "keywords": [
+    "jabra",
+    "electron"
+  ],
+  "author": "GN Audio",
+  "license": "MIT",
+  "private": false,
+  "homepage": "https://github.com/gnaudio/jabra-node-sdk/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gnaudio/jabra-node-sdk.git",
+    "directory": "electronrendererhelper"
+  },
+  "bugs": {
+    "url": "https://developer.jabra.com"
+  },
+  "dependencies": {},
+  "peerDependencies": {
+    "@gnaudio/jabra-node-sdk": ">=2.0.0",
+    "electron": ">=2.0.0"
+  },
+  "devDependencies": {
+    "@gnaudio/jabra-node-sdk": ">=2.0.0",
+    "@types/jest": "24.0.23",
+    "spectron": "9.0.0",
+    "electron": "7.1.1",
+    "typescript": "3.7.2",
+    "rimraf": "3.0.0",
+    "cross-env": "6.0.3",
+    "jest": "24.9.0",
+    "ts-jest": "24.1.0",
+    "copyfiles": "2.1.1",
+    "browserify": "16.5.0",
+    "tsify": "4.0.1"
+  }
+}
